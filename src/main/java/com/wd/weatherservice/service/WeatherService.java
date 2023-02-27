@@ -5,6 +5,7 @@ import com.wd.weatherservice.compatator.WeatherComparator;
 import com.wd.weatherservice.dto.SixteenDayForecastDto;
 import com.wd.weatherservice.dto.WeatherDataDto;
 import com.wd.weatherservice.exception.exception.FailedToFindForecastException;
+import com.wd.weatherservice.exception.exception.NoSuitableLocationException;
 import com.wd.weatherservice.model.Forecast;
 import com.wd.weatherservice.model.Locations;
 import lombok.RequiredArgsConstructor;
@@ -35,9 +36,11 @@ public class WeatherService {
                 .sorted(comparator)
                 .toList();
 
-        int highestCalculatedValue = WeatherComparator.calculateValue(forecasts.get(0));
+        if (forecasts.isEmpty()) {
+            throw new NoSuitableLocationException();
+        }
 
-        return filterForecastsWithHighestValue(forecasts, highestCalculatedValue);
+        return filterForecastsWithHighestValue(forecasts);
     }
 
     private List<SixteenDayForecastDto> getSixteenDayForecastsFromHttpClient() {
@@ -46,7 +49,9 @@ public class WeatherService {
                 .toList();
     }
 
-    private List<Forecast> filterForecastsWithHighestValue(List<Forecast> forecasts, int highestCalculatedValue) {
+    private List<Forecast> filterForecastsWithHighestValue(List<Forecast> forecasts) {
+        int highestCalculatedValue = WeatherComparator.calculateValue(forecasts.get(0));
+
         return forecasts.stream()
                 .filter(forecast -> WeatherComparator.calculateValue(forecast) == highestCalculatedValue)
                 .toList();
