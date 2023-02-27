@@ -5,13 +5,13 @@ import com.wd.weatherservice.compatator.WeatherComparator;
 import com.wd.weatherservice.dto.SixteenDayForecastDto;
 import com.wd.weatherservice.dto.WeatherDataDto;
 import com.wd.weatherservice.exception.exception.FailedToFindForecastException;
-import com.wd.weatherservice.exception.exception.NoSuitableLocationException;
 import com.wd.weatherservice.model.Forecast;
 import com.wd.weatherservice.model.Locations;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -37,7 +37,7 @@ public class WeatherService {
                 .toList();
 
         if (forecasts.isEmpty()) {
-            throw new NoSuitableLocationException();
+            return Collections.emptyList();
         }
 
         return filterForecastsWithHighestValue(forecasts);
@@ -65,7 +65,7 @@ public class WeatherService {
                 sixteenDayForecast.country_code(),
                 countAverageTemperature(forecastForGivenDay.min_temp(), forecastForGivenDay.max_temp()),
                 forecastForGivenDay.wind_spd(),
-                date
+                forecastForGivenDay.datetime()
         );
     }
 
