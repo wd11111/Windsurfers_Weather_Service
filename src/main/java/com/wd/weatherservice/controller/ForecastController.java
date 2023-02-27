@@ -2,7 +2,7 @@ package com.wd.weatherservice.controller;
 
 import com.wd.weatherservice.dto.RequestDateDto;
 import com.wd.weatherservice.model.Forecast;
-import com.wd.weatherservice.service.WeatherService;
+import com.wd.weatherservice.service.ForecastService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,15 +13,15 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/weather")
+@RequestMapping("/api/forecast")
 @RequiredArgsConstructor
-public class WeatherController {
+public class ForecastController {
 
-    private final WeatherService weatherService;
+    private final ForecastService forecastService;
 
     @PostMapping
     List<Forecast> getTheBestLocationForWindsurfing(@RequestBody @Valid RequestDateDto requestDateDto) {
-        return weatherService.getTheBestLocationForWindsurfing(requestDateDto.date().toString());
+        return forecastService.getTheBestLocationForWindsurfing(requestDateDto.date().toString());
     }
 
 }

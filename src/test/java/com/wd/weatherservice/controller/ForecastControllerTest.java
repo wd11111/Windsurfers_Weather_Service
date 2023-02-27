@@ -2,12 +2,12 @@ package com.wd.weatherservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wd.weatherservice.Samples;
-import com.wd.weatherservice.client.WeatherHttpClient;
-import com.wd.weatherservice.compatator.WeatherComparator;
+import com.wd.weatherservice.client.ForecastHttpClient;
+import com.wd.weatherservice.compatator.ForecastComparator;
 import com.wd.weatherservice.dto.RequestDateDto;
 import com.wd.weatherservice.exception.handler.RestExceptionHandler;
 import com.wd.weatherservice.model.Forecast;
-import com.wd.weatherservice.service.WeatherService;
+import com.wd.weatherservice.service.ForecastService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -32,10 +32,10 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @WebMvcTest()
 @ContextConfiguration(classes = MockMvcConfig.class)
-class WeatherControllerTest implements Samples {
+class ForecastControllerTest implements Samples {
 
     @MockBean
-    private WeatherService weatherService;
+    private ForecastService forecastService;
 
     @Autowired
     private MockMvc mockMvc;
@@ -48,9 +48,9 @@ class WeatherControllerTest implements Samples {
         String requestBody = objectMapper.writeValueAsString(new RequestDateDto(now().plusDays(5)));
         List<Forecast> response = List.of(getSampleForecastResponse());
         String expectedResponseBody = objectMapper.writeValueAsString(response);
-        when(weatherService.getTheBestLocationForWindsurfing(anyString())).thenReturn(response);
+        when(forecastService.getTheBestLocationForWindsurfing(anyString())).thenReturn(response);
 
-        String responseBody = mockMvc.perform(MockMvcRequestBuilders.post("/api/weather")
+        String responseBody = mockMvc.perform(MockMvcRequestBuilders.post("/api/forecast")
                         .contentType(APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -65,24 +65,24 @@ class WeatherControllerTest implements Samples {
     void should_return_bad_request_status_when_given_date_is_farther_than_sixteen_days() throws Exception {
         String requestBody = objectMapper.writeValueAsString(new RequestDateDto(now().plusDays(16)));
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/weather")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/forecast")
                         .contentType(APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
-        verify(weatherService, never()).getTheBestLocationForWindsurfing(anyString());
+        verify(forecastService, never()).getTheBestLocationForWindsurfing(anyString());
     }
 
     @Test
     void should_return_bad_request_status_when_given_date_is_past() throws Exception {
         String requestBody = objectMapper.writeValueAsString(new RequestDateDto(now().minusDays(5)));
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/weather")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/forecast")
                         .contentType(APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
-        verify(weatherService, never()).getTheBestLocationForWindsurfing(anyString());
+        verify(forecastService, never()).getTheBestLocationForWindsurfing(anyString());
     }
 
 }
@@ -95,14 +95,14 @@ class MockMvcConfig {
     }
 
     @Bean
-    WeatherService weatherService() {
-        WeatherHttpClient weatherHttpClient = mock(WeatherHttpClient.class);
-        Comparator<Forecast> comparator = mock(WeatherComparator.class);
-        return new WeatherService(weatherHttpClient, comparator);
+    ForecastService weatherService() {
+        ForecastHttpClient forecastHttpClient = mock(ForecastHttpClient.class);
+        Comparator<Forecast> comparator = mock(ForecastComparator.class);
+        return new ForecastService(forecastHttpClient, comparator);
     }
 
     @Bean
-    WeatherController weatherController(WeatherService weatherService) {
-        return new WeatherController(weatherService);
+    ForecastController weatherController(ForecastService forecastService) {
+        return new ForecastController(forecastService);
     }
 }

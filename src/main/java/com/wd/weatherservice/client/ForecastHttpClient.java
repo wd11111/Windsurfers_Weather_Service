@@ -17,13 +17,13 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @Slf4j
 @RequiredArgsConstructor
-public class WeatherHttpClient {
+public class ForecastHttpClient {
 
     private final RestTemplate restTemplate;
     private final String path;
-    private final String key;
+    private final String apiKey;
 
-    public SixteenDayForecastDto getWeatherForCity(String city, String country) {
+    public SixteenDayForecastDto getForecastForLocation(String city, String country) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(APPLICATION_JSON);
         HttpEntity<Map<String, String>> entity = new HttpEntity<>(httpHeaders);
@@ -37,7 +37,7 @@ public class WeatherHttpClient {
             );
             final SixteenDayForecastDto body = response.getBody();
 
-            return validateBody(city, body);
+            return validateResponseBody(city, body);
         } catch (RestClientException e) {
             log.error(e.getMessage());
             throw new ForecastNotFoundException(city);
@@ -45,10 +45,10 @@ public class WeatherHttpClient {
     }
 
     private String buildPath(String city, String country) {
-        return String.format("%s?key=%s&city=%s&country=%s", path, key, city, country);
+        return String.format("%s?key=%s&city=%s&country=%s", path, apiKey, city, country);
     }
 
-    private SixteenDayForecastDto validateBody(String city, SixteenDayForecastDto body) {
+    private SixteenDayForecastDto validateResponseBody(String city, SixteenDayForecastDto body) {
         if (body == null) {
             throw new ForecastNotFoundException(city);
         }

@@ -1,7 +1,7 @@
 package com.wd.weatherservice.service;
 
-import com.wd.weatherservice.client.WeatherHttpClient;
-import com.wd.weatherservice.compatator.WeatherComparator;
+import com.wd.weatherservice.client.ForecastHttpClient;
+import com.wd.weatherservice.compatator.ForecastComparator;
 import com.wd.weatherservice.dto.SixteenDayForecastDto;
 import com.wd.weatherservice.dto.WeatherDataDto;
 import com.wd.weatherservice.exception.exception.FailedToFindForecastException;
@@ -16,14 +16,14 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class WeatherService {
+public class ForecastService {
 
     public static final int MIN_WIND_SPEED = 5;
     public static final int MAX_WIND_SPEED = 18;
     public static final int MIN_TEMP = 5;
     public static final int MAX_TEMP = 35;
 
-    private final WeatherHttpClient weatherHttpClient;
+    private final ForecastHttpClient forecastHttpClient;
     private final Comparator<Forecast> comparator;
 
     public List<Forecast> getTheBestLocationForWindsurfing(String date) {
@@ -45,15 +45,15 @@ public class WeatherService {
     private List<SixteenDayForecastDto> getSixteenDayForecastsFromHttpClient() {
         return Locations.getLocations().entrySet()
                 .stream()
-                .map(location -> weatherHttpClient.getWeatherForCity(location.getKey(), location.getValue()))
+                .map(location -> forecastHttpClient.getForecastForLocation(location.getKey(), location.getValue()))
                 .toList();
     }
 
     private List<Forecast> filterForecastsWithHighestValue(List<Forecast> forecasts) {
-        int highestCalculatedValue = WeatherComparator.calculateValue(forecasts.get(0));
+        int highestCalculatedValue = ForecastComparator.calculateValue(forecasts.get(0));
 
         return forecasts.stream()
-                .filter(forecast -> WeatherComparator.calculateValue(forecast) == highestCalculatedValue)
+                .filter(forecast -> ForecastComparator.calculateValue(forecast) == highestCalculatedValue)
                 .toList();
     }
 
@@ -75,7 +75,7 @@ public class WeatherService {
                 .filter(forecast -> forecast.datetime().equals(date))
                 .toList()
                 .stream()
-                .findAny()
+                .findFirst()
                 .orElseThrow(() -> new FailedToFindForecastException(forecasts.city_name(), date));
     }
 
