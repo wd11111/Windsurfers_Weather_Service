@@ -31,7 +31,8 @@ public class WeatherHttpClient {
         try {
             ResponseEntity<SixteenDayForecastDto> response = restTemplate.exchange(
                     buildPath(city, country),
-                    HttpMethod.GET, entity,
+                    HttpMethod.GET,
+                    entity,
                     SixteenDayForecastDto.class
             );
             final SixteenDayForecastDto body = response.getBody();
