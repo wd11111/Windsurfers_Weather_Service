@@ -10,6 +10,7 @@ public enum Locations {
     JASTARNIA("Jastarnia", "Poland"),
     BRIDGETOWN("Bridgetown", "Barbados"),
     FORTALEZA("Fortaleza", "Brazil"),
+    WAILEA("Wailea", "Hawaii"),
     PISSOURI("Pissouri", "Cyprus");
 
     private final String city;
