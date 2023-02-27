@@ -10,7 +10,7 @@ public class MaxDateValidator implements ConstraintValidator<MaxDate, LocalDate>
 
     @Override
     public boolean isValid(LocalDate localDate, ConstraintValidatorContext constraintValidatorContext) {
-        LocalDate furthestPossibleDate = LocalDate.now().plus(7, ChronoUnit.DAYS);
-        return localDate.isBefore(furthestPossibleDate);
+        LocalDate furthestPossibleDate = LocalDate.now().plus(16, ChronoUnit.DAYS);
+        return localDate.isBefore(furthestPossibleDate) && (localDate.isEqual(LocalDate.now()) || localDate.isAfter(LocalDate.now()));
     }
 }
