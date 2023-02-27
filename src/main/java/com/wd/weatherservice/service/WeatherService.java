@@ -10,19 +10,20 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class WeatherService {
 
-    public static final int MIN_WIND_SPEED = 3;//5
+    public static final int MIN_WIND_SPEED = 5;
     public static final int MAX_WIND_SPEED = 18;
     public static final int MIN_TEMP = 5;
     public static final int MAX_TEMP = 35;
 
     private final WeatherHttpClient weatherHttpClient;
-    private final WeatherComparator comparator;
+    private final Comparator<Forecast> comparator;
 
     public List<Forecast> getTheBestLocationForWindsurfing(String date) {
         List<SixteenDayForecastDto> sixteenDayForecasts = getSixteenDayForecastsFromHttpClient();
@@ -33,7 +34,7 @@ public class WeatherService {
                 .sorted(comparator)
                 .toList();
 
-        int highestCalculatedValue = comparator.calculateValue(forecasts.get(0));
+        int highestCalculatedValue = WeatherComparator.calculateValue(forecasts.get(0));
 
         return filterForecastsWithHighestValue(forecasts, highestCalculatedValue);
     }
@@ -46,7 +47,7 @@ public class WeatherService {
 
     private List<Forecast> filterForecastsWithHighestValue(List<Forecast> forecasts, int highestCalculatedValue) {
         return forecasts.stream()
-                .filter(forecast -> comparator.calculateValue(forecast) == highestCalculatedValue)
+                .filter(forecast -> WeatherComparator.calculateValue(forecast) == highestCalculatedValue)
                 .toList();
     }
 
