@@ -1,15 +1,16 @@
 package com.wd.weatherservice.client;
 
-import com.wd.weatherservice.model.WeatherDto;
+import com.wd.weatherservice.dto.SixteenDayForecastDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -20,28 +21,27 @@ public class WeatherHttpClient {
     private final String path;
     private final String key;
 
-    public List<WeatherDto> getWeatherForCity(String city, String country) {
+    public SixteenDayForecastDto getWeatherForCity(String city, String country) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        final HttpEntity<HttpHeaders> requestEntity = new HttpEntity<>(httpHeaders);
+        HttpEntity<Map<String, String>> entity = new HttpEntity<>(httpHeaders);
 
         try {
-            ResponseEntity<List<WeatherDto>> response = restTemplate.exchange(path, HttpMethod.GET, requestEntity,
-                    new ParameterizedTypeReference<List<WeatherDto>>() {
-                    }, getParams(city, country));
+            ResponseEntity<SixteenDayForecastDto> response = restTemplate.exchange(
+                    buildPath(city, country),
+                    HttpMethod.GET, entity,
+                    SixteenDayForecastDto.class
+            );
 
-            final List<WeatherDto> body = response.getBody();
-            return (body != null) ? body : Collections.emptyList();
+            final SixteenDayForecastDto body = response.getBody();
+            return (body != null) ? body : null;
         } catch (RestClientException e) {
             log.error(e.getMessage());
-            return Collections.emptyList();
+            return null;
         }
     }
 
-    private Map<String, String> getParams(String city, String country) {
-        return Map.of(
-                "key", key,
-                "city", city,
-                "country", country);
+    private String buildPath(String city, String country) {
+        return String.format("%s?key=%s&city=%s&country=%s", path, key, city, country);
     }
 }
