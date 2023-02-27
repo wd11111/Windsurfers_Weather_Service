@@ -69,14 +69,14 @@ public class WeatherService {
         );
     }
 
-    private WeatherDataDto getForecastForGivenDay(SixteenDayForecastDto forecast, String date) {
-        return forecast.data()
+    private WeatherDataDto getForecastForGivenDay(SixteenDayForecastDto forecasts, String date) {
+        return forecasts.data()
                 .stream()
-                .filter(data -> data.datetime().equals(date))
+                .filter(forecast -> forecast.datetime().equals(date))
                 .toList()
                 .stream()
                 .findAny()
-                .orElseThrow(() -> new FailedToFindForecastException(forecast.city_name(), date));
+                .orElseThrow(() -> new FailedToFindForecastException(forecasts.city_name(), date));
     }
 
     private int countAverageTemperature(int minTemperature, int maxTemperature) {
