@@ -10,7 +10,6 @@ import com.wd.weatherservice.model.Locations;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -44,8 +43,9 @@ public class WeatherService {
     }
 
     private List<SixteenDayForecastDto> getSixteenDayForecastsFromHttpClient() {
-        return Arrays.stream(Locations.values())
-                .map(place -> weatherHttpClient.getWeatherForCity(place.getCity(), place.getCountry()))
+        return Locations.getLocations().entrySet()
+                .stream()
+                .map(location -> weatherHttpClient.getWeatherForCity(location.getKey(), location.getValue()))
                 .toList();
     }
 

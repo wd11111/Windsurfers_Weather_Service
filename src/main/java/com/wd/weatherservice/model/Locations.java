@@ -1,18 +1,24 @@
 package com.wd.weatherservice.model;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
-@RequiredArgsConstructor
-@Getter
-public enum Locations {
+public class Locations {
 
-    JASTARNIA("Jastarnia", "Poland"),
-    BRIDGETOWN("Bridgetown", "Barbados"),
-    FORTALEZA("Fortaleza", "Brazil"),
-    WAILEA("Wailea", "Hawaii"),
-    PISSOURI("Pissouri", "Cyprus");
+    private static final Map<String, String> locations;
 
-    private final String city;
-    private final String country;
+    static {
+        locations = new HashMap<>();
+
+        locations.put("Jastarnia", "Poland");
+        locations.put("Bridgetown", "Barbados");
+        locations.put("Fortaleza", "Brazil");
+        locations.put("Wailea", "Hawaii");
+        locations.put("Pissouri", "Cyprus");
+    }
+
+    public static Map<String, String> getLocations() {
+        return Collections.unmodifiableMap(locations);
+    }
 }
