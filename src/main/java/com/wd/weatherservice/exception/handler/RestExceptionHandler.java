@@ -3,7 +3,6 @@ package com.wd.weatherservice.exception.handler;
 import com.wd.weatherservice.exception.dto.ErrorResponse;
 import com.wd.weatherservice.exception.exception.FailedToFindForecastException;
 import com.wd.weatherservice.exception.exception.ForecastNotFoundException;
-import com.wd.weatherservice.exception.exception.NoSuitableLocationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +19,6 @@ import java.util.Map;
 public class RestExceptionHandler {
 
     @ExceptionHandler({
-            NoSuitableLocationException.class,
             FailedToFindForecastException.class,
             ForecastNotFoundException.class
     })
