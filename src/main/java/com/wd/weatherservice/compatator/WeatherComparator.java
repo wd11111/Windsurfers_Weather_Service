@@ -9,7 +9,7 @@ import java.util.Comparator;
 public class WeatherComparator implements Comparator<Forecast> {
     @Override
     public int compare(Forecast o1, Forecast o2) {
-        return Integer.compare(calculateValue(o1), calculateValue(o2));
+        return Integer.compare(calculateValue(o2), calculateValue(o1));
     }
 
     public int calculateValue(Forecast forecast) {
