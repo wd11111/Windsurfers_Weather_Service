@@ -1,4 +1,4 @@
-package com.wd.weatherservice.exception;
+package com.wd.weatherservice.exception.handler;
 
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.DefaultResponseErrorHandler;
