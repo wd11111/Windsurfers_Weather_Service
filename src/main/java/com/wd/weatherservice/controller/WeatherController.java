@@ -21,7 +21,7 @@ public class WeatherController {
 
     @PostMapping
     List<Forecast> getTheBestLocationForWindsurfing(@RequestBody @Valid RequestDateDto requestDateDto) {
-        return weatherService.getTheBestLocationForWindsurfing(requestDateDto.localDate().toString());
+        return weatherService.getTheBestLocationForWindsurfing(requestDateDto.date().toString());
     }
 
 }
