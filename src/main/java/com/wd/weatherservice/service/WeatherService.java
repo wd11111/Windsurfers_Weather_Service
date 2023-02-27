@@ -4,6 +4,7 @@ import com.wd.weatherservice.client.WeatherHttpClient;
 import com.wd.weatherservice.compatator.WeatherComparator;
 import com.wd.weatherservice.dto.SixteenDayForecastDto;
 import com.wd.weatherservice.dto.WeatherDataDto;
+import com.wd.weatherservice.exception.exception.FailedToFindForecastException;
 import com.wd.weatherservice.model.Forecast;
 import com.wd.weatherservice.model.Locations;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +53,7 @@ public class WeatherService {
     }
 
     private Forecast mapToForecast(String date, SixteenDayForecastDto sixteenDayForecast) {
-        WeatherDataDto forecastForGivenDay = getForecastForGivenDay(sixteenDayForecast.data(), date);
+        WeatherDataDto forecastForGivenDay = getForecastForGivenDay(sixteenDayForecast, date);
 
         return new Forecast(
                 sixteenDayForecast.city_name(),
@@ -63,11 +64,14 @@ public class WeatherService {
         );
     }
 
-    private WeatherDataDto getForecastForGivenDay(List<WeatherDataDto> weatherDataDtoList, String date) {
-        return weatherDataDtoList.stream()
+    private WeatherDataDto getForecastForGivenDay(SixteenDayForecastDto forecast, String date) {
+        return forecast.data()
+                .stream()
                 .filter(data -> data.datetime().equals(date))
                 .toList()
-                .get(0);
+                .stream()
+                .findAny()
+                .orElseThrow(() -> new FailedToFindForecastException(forecast.city_name(), date));
     }
 
     private int countAverageTemperature(int minTemperature, int maxTemperature) {

@@ -1,6 +1,7 @@
 package com.wd.weatherservice.exception.handler;
 
 import com.wd.weatherservice.exception.dto.ErrorResponse;
+import com.wd.weatherservice.exception.exception.FailedToFindForecastException;
 import com.wd.weatherservice.exception.exception.NoSuitableLocationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,8 +18,11 @@ import java.util.Map;
 @Slf4j
 public class RestExceptionHandler {
 
-    @ExceptionHandler(NoSuitableLocationException.class)
-    public ResponseEntity<ErrorResponse> handleNoSuitableLocationException(NoSuitableLocationException e) {
+    @ExceptionHandler({
+            NoSuitableLocationException.class,
+            FailedToFindForecastException.class
+    })
+    public ResponseEntity<ErrorResponse> handleNotFoundException(RuntimeException e) {
         ErrorResponse errorResponse = new ErrorResponse(e.getMessage(), HttpStatus.NOT_FOUND);
         log.error(e.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
