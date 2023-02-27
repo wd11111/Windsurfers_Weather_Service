@@ -25,9 +25,7 @@ public class WeatherService {
     private final WeatherComparator comparator;
 
     public List<Forecast> getTheBestLocationForWindsurfing(String date) {
-        List<SixteenDayForecastDto> sixteenDayForecasts = Arrays.stream(Locations.values())
-                .map(place -> weatherHttpClient.getWeatherForCity(place.getCity(), place.getCountry()))
-                .toList();
+        List<SixteenDayForecastDto> sixteenDayForecasts = getSixteenDayForecastsFromHttpClient();
 
         List<Forecast> forecasts = sixteenDayForecasts.stream()
                 .map(sixteenDayForecast -> mapToForecast(date, sixteenDayForecast))
@@ -38,7 +36,17 @@ public class WeatherService {
         int highestCalculatedValue = comparator.calculateValue(forecasts.get(0));
 
         return forecasts.stream()
-                .filter(forecast -> comparator.calculateValue(forecast) == highestCalculatedValue)
+                .filter(forecast -> filterForecastsWithHighestValue(highestCalculatedValue, forecast))
+                .toList();
+    }
+
+    private boolean filterForecastsWithHighestValue(int highestCalculatedValue, Forecast forecast) {
+        return comparator.calculateValue(forecast) == highestCalculatedValue;
+    }
+
+    private List<SixteenDayForecastDto> getSixteenDayForecastsFromHttpClient() {
+        return Arrays.stream(Locations.values())
+                .map(place -> weatherHttpClient.getWeatherForCity(place.getCity(), place.getCountry()))
                 .toList();
     }
 
