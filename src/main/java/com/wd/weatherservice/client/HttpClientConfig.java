@@ -1,6 +1,6 @@
 package com.wd.weatherservice.client;
 
-import com.wd.weatherservice.exception.RestTemplateResponseErrorHandler;
+import com.wd.weatherservice.exception.handler.RestTemplateResponseErrorHandler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
