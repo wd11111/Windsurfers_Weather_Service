@@ -57,7 +57,8 @@ public class WeatherService {
                 sixteenDayForecast.city_name(),
                 sixteenDayForecast.country_code(),
                 countAverageTemperature(forecastForGivenDay.min_temp(), forecastForGivenDay.max_temp()),
-                forecastForGivenDay.wind_spd()
+                forecastForGivenDay.wind_spd(),
+                date
         );
     }
 
