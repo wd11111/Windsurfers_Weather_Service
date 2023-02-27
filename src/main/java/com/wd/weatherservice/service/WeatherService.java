@@ -25,12 +25,12 @@ public class WeatherService {
     private final WeatherHttpClient weatherHttpClient;
     private final WeatherComparator comparator;
 
-    public Forecast getTheBestLocationForWindsurfing(String date) {
+    public List<Forecast> getTheBestLocationForWindsurfing(String date) {
         List<SixteenDayForecastDto> sixteenDayForecasts = Arrays.stream(Locations.values())
                 .map(place -> weatherHttpClient.getWeatherForCity(place.getCity(), place.getCountry()))
                 .toList();
 
-        return sixteenDayForecasts.stream()
+        List<Forecast> forecasts = sixteenDayForecasts.stream()
                 .map(sixteenDayForecast -> {
                     WeatherDataDto forecastForGivenDay = sixteenDayForecast.data()
                             .stream()
@@ -47,8 +47,14 @@ public class WeatherService {
                 })
                 .filter(forecast -> (forecast.windSpeed() >= MIN_WIND_SPEED && forecast.windSpeed() <= MAX_WIND_SPEED)
                         && (forecast.avgTemp() >= MIN_TEMP && forecast.avgTemp() <= MAX_TEMP))
-                .max(comparator)
-                .orElseThrow(NoSuitableLocationException::new);
+                .sorted(comparator)
+                .toList();
+
+        int highestCalculatedValue = comparator.calculateValue(forecasts.get(0));
+
+        return forecasts.stream()
+                .filter(forecast -> comparator.calculateValue(forecast) == highestCalculatedValue)
+                .toList();
     }
 
 }

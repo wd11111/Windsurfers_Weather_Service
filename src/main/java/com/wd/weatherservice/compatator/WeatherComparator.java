@@ -12,7 +12,7 @@ public class WeatherComparator implements Comparator<Forecast> {
         return Integer.compare(calculateValue(o1), calculateValue(o2));
     }
 
-    private int calculateValue(Forecast forecast) {
+    public int calculateValue(Forecast forecast) {
         return forecast.windSpeed() * 3 + forecast.avgTemp();
     }
 }
