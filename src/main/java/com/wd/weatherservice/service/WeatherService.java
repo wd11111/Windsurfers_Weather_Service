@@ -35,18 +35,18 @@ public class WeatherService {
 
         int highestCalculatedValue = comparator.calculateValue(forecasts.get(0));
 
-        return forecasts.stream()
-                .filter(forecast -> filterForecastsWithHighestValue(highestCalculatedValue, forecast))
-                .toList();
-    }
-
-    private boolean filterForecastsWithHighestValue(int highestCalculatedValue, Forecast forecast) {
-        return comparator.calculateValue(forecast) == highestCalculatedValue;
+        return filterForecastsWithHighestValue(forecasts, highestCalculatedValue);
     }
 
     private List<SixteenDayForecastDto> getSixteenDayForecastsFromHttpClient() {
         return Arrays.stream(Locations.values())
                 .map(place -> weatherHttpClient.getWeatherForCity(place.getCity(), place.getCountry()))
+                .toList();
+    }
+
+    private List<Forecast> filterForecastsWithHighestValue(List<Forecast> forecasts, int highestCalculatedValue) {
+        return forecasts.stream()
+                .filter(forecast -> comparator.calculateValue(forecast) == highestCalculatedValue)
                 .toList();
     }
 
