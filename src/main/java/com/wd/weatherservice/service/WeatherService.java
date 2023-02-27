@@ -42,25 +42,31 @@ public class WeatherService {
                 .toList();
     }
 
-    private boolean doesLocationFulfilCriteria(Forecast forecast) {
-        return (forecast.windSpeed() >= MIN_WIND_SPEED && forecast.windSpeed() <= MAX_WIND_SPEED)
-                && (forecast.avgTemp() >= MIN_TEMP && forecast.avgTemp() <= MAX_TEMP);
-    }
-
     private Forecast mapToForecast(String date, SixteenDayForecastDto sixteenDayForecast) {
-        WeatherDataDto forecastForGivenDay = sixteenDayForecast.data()
-                .stream()
-                .filter(data -> data.datetime().equals(date))
-                .toList()
-                .get(0);
+        WeatherDataDto forecastForGivenDay = getForecastForGivenDay(sixteenDayForecast.data(), date);
 
         return new Forecast(
                 sixteenDayForecast.city_name(),
                 sixteenDayForecast.country_code(),
-                (forecastForGivenDay.min_temp() + forecastForGivenDay.max_temp()) / 2,
+                countAverageTemperature(forecastForGivenDay.min_temp(), forecastForGivenDay.max_temp()),
                 forecastForGivenDay.wind_spd()
         );
     }
 
+    private WeatherDataDto getForecastForGivenDay(List<WeatherDataDto> weatherDataDtoList, String date) {
+        return weatherDataDtoList.stream()
+                .filter(data -> data.datetime().equals(date))
+                .toList()
+                .get(0);
+    }
+
+    private int countAverageTemperature(int minTemperature, int maxTemperature) {
+        return (minTemperature + maxTemperature) / 2;
+    }
+
+    private boolean doesLocationFulfilCriteria(Forecast forecast) {
+        return (forecast.windSpeed() >= MIN_WIND_SPEED && forecast.windSpeed() <= MAX_WIND_SPEED)
+                && (forecast.avgTemp() >= MIN_TEMP && forecast.avgTemp() <= MAX_TEMP);
+    }
 
 }
