@@ -29,9 +29,9 @@ public class HttpClientConfig {
     }
 
     @Bean
-    ForecastHttpClient offerClient(RestTemplate restTemplate,
-                                   @Value("${http.client.config.key}") String apiKey,
-                                   @Value("${http.client.config.path}") String path) {
-        return new ForecastHttpClient(restTemplate, path, apiKey);
+    ForecastHttpClient forecastClient(RestTemplate restTemplate,
+                                      @Value("${http.client.config.key}") String apiKey,
+                                      @Value("${http.client.config.path}") String path) {
+        return new ForecastHttpClientImpl(restTemplate, path, apiKey);
     }
 }

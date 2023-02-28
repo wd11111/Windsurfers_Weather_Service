@@ -3,8 +3,7 @@ package com.wd.weatherservice.service;
 import com.wd.weatherservice.client.ForecastHttpClient;
 import com.wd.weatherservice.compatator.ForecastComparator;
 import com.wd.weatherservice.dto.SixteenDayForecastDto;
-import com.wd.weatherservice.dto.WeatherDataDto;
-import com.wd.weatherservice.exception.exception.FailedToFindForecastException;
+import com.wd.weatherservice.mapper.ForecastMapper;
 import com.wd.weatherservice.model.Forecast;
 import com.wd.weatherservice.model.Locations;
 import lombok.RequiredArgsConstructor;
@@ -20,17 +19,18 @@ public class ForecastService {
 
     public static final int MIN_WIND_SPEED = 5;
     public static final int MAX_WIND_SPEED = 18;
-    public static final int MIN_TEMP = 5;
-    public static final int MAX_TEMP = 35;
+    public static final int MIN_TEMPERATURE = 5;
+    public static final int MAX_TEMPERATURE = 35;
 
     private final ForecastHttpClient forecastHttpClient;
+    private final ForecastMapper forecastMapper;
     private final Comparator<Forecast> comparator;
 
     public List<Forecast> getTheBestLocationForWindsurfing(String date) {
         List<SixteenDayForecastDto> sixteenDayForecasts = getSixteenDayForecastsFromHttpClient();
 
         List<Forecast> forecasts = sixteenDayForecasts.stream()
-                .map(sixteenDayForecast -> mapToForecast(date, sixteenDayForecast))
+                .map(sixteenDayForecast -> forecastMapper.mapToForecast(date, sixteenDayForecast))
                 .filter(this::doesLocationFulfilCriteria)
                 .sorted(comparator)
                 .toList();
@@ -57,35 +57,9 @@ public class ForecastService {
                 .toList();
     }
 
-    private Forecast mapToForecast(String date, SixteenDayForecastDto sixteenDayForecast) {
-        WeatherDataDto forecastForGivenDay = getForecastForGivenDay(sixteenDayForecast, date);
-
-        return new Forecast(
-                sixteenDayForecast.city_name(),
-                sixteenDayForecast.country_code(),
-                countAverageTemperature(forecastForGivenDay.min_temp(), forecastForGivenDay.max_temp()),
-                forecastForGivenDay.wind_spd(),
-                forecastForGivenDay.datetime()
-        );
-    }
-
-    private WeatherDataDto getForecastForGivenDay(SixteenDayForecastDto forecasts, String date) {
-        return forecasts.data()
-                .stream()
-                .filter(forecast -> forecast.datetime().equals(date))
-                .toList()
-                .stream()
-                .findFirst()
-                .orElseThrow(() -> new FailedToFindForecastException(forecasts.city_name(), date));
-    }
-
-    private int countAverageTemperature(int minTemperature, int maxTemperature) {
-        return (minTemperature + maxTemperature) / 2;
-    }
-
     private boolean doesLocationFulfilCriteria(Forecast forecast) {
         return (forecast.windSpeed() >= MIN_WIND_SPEED && forecast.windSpeed() <= MAX_WIND_SPEED)
-                && (forecast.avgTemp() >= MIN_TEMP && forecast.avgTemp() <= MAX_TEMP);
+                && (forecast.avgTemp() >= MIN_TEMPERATURE && forecast.avgTemp() <= MAX_TEMPERATURE);
     }
 
 }

@@ -2,10 +2,11 @@ package com.wd.weatherservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wd.weatherservice.Samples;
-import com.wd.weatherservice.client.ForecastHttpClient;
+import com.wd.weatherservice.client.ForecastHttpClientImpl;
 import com.wd.weatherservice.compatator.ForecastComparator;
 import com.wd.weatherservice.dto.RequestDateDto;
 import com.wd.weatherservice.exception.handler.RestExceptionHandler;
+import com.wd.weatherservice.mapper.ForecastMapper;
 import com.wd.weatherservice.model.Forecast;
 import com.wd.weatherservice.service.ForecastService;
 import org.junit.jupiter.api.Test;
@@ -96,9 +97,10 @@ class MockMvcConfig {
 
     @Bean
     ForecastService weatherService() {
-        ForecastHttpClient forecastHttpClient = mock(ForecastHttpClient.class);
+        ForecastHttpClientImpl forecastHttpClientImpl = mock(ForecastHttpClientImpl.class);
+        ForecastMapper forecastMapper = mock(ForecastMapper.class);
         Comparator<Forecast> comparator = mock(ForecastComparator.class);
-        return new ForecastService(forecastHttpClient, comparator);
+        return new ForecastService(forecastHttpClientImpl, forecastMapper, comparator);
     }
 
     @Bean

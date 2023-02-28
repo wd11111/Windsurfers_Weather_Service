@@ -10,137 +10,53 @@ import java.util.List;
 
 public interface Samples {
 
-    default List<SixteenDayForecastDto> getListOfFiveForecastsForLocationsWithOneAsTheBestOne() {
+    default List<Forecast> getListOfFiveForecastsWithOneAsTheBestOne() {
         return List.of(
-                new SixteenDayForecastDto("Jastarnia", "PL", List.of(
-                        new WeatherDataDto(2, 1, 4, "2023-02-27"),
-                        new WeatherDataDto(4, 1, 4, "2023-02-28")
-                )),
-                new SixteenDayForecastDto("Bridgetown", "BB", List.of(
-                        new WeatherDataDto(26, 23, 4, "2023-02-27"),
-                        new WeatherDataDto(26, 24, 8, "2023-02-28")
-                )),
-                new SixteenDayForecastDto("Fortaleza", "BR", List.of(
-                        new WeatherDataDto(27, 24, 4, "2023-02-27"),
-                        new WeatherDataDto(29, 25, 5, "2023-02-28")
-                )),
-                new SixteenDayForecastDto("Pissouri", "CY", List.of(
-                        new WeatherDataDto(21, 11, 2, "2023-02-27"),
-                        new WeatherDataDto(23, 14, 3, "2023-02-28")
-                )),
-                new SixteenDayForecastDto("Wailea", "US", List.of(
-                        new WeatherDataDto(24, 18, 4, "2023-02-27"),
-                        new WeatherDataDto(23, 19, 6, "2023-02-28")
-                ))
+                new Forecast("Jastarnia", "PL", 2, 4, "2023-02-28"),
+                new Forecast("Bridgetown", "BB", 25, 8, "2023-02-28"),
+                new Forecast("Fortaleza", "BR", 27, 5, "2023-02-28"),
+                new Forecast("Pissouri", "CY", 18, 3, "2023-02-28"),
+                new Forecast("Wailea", "US", 21, 6, "2023-02-28")
         );
     }
 
-    default List<SixteenDayForecastDto> getListOfFiveForecastsForLocationsWithTwoAsTheBestOnes() {
+    default List<Forecast> getListOfFiveForecastsWithTwoAsTheBestOnes() {
         return List.of(
-                new SixteenDayForecastDto("Jastarnia", "PL", List.of(
-                        new WeatherDataDto(2, 1, 4, "2023-02-27"),
-                        new WeatherDataDto(26, 24, 8, "2023-02-28")
-                )),
-                new SixteenDayForecastDto("Bridgetown", "BB", List.of(
-                        new WeatherDataDto(26, 23, 4, "2023-02-27"),
-                        new WeatherDataDto(26, 24, 8, "2023-02-28")
-                )),
-                new SixteenDayForecastDto("Fortaleza", "BR", List.of(
-                        new WeatherDataDto(27, 24, 4, "2023-02-27"),
-                        new WeatherDataDto(29, 25, 5, "2023-02-28")
-                )),
-                new SixteenDayForecastDto("Pissouri", "CY", List.of(
-                        new WeatherDataDto(21, 11, 2, "2023-02-27"),
-                        new WeatherDataDto(23, 14, 3, "2023-02-28")
-                )),
-                new SixteenDayForecastDto("Wailea", "US", List.of(
-                        new WeatherDataDto(24, 18, 4, "2023-02-27"),
-                        new WeatherDataDto(23, 19, 6, "2023-02-28")
-                ))
+                new Forecast("Jastarnia", "PL", 25, 8, "2023-02-28"),
+                new Forecast("Bridgetown", "BB", 25, 8, "2023-02-28"),
+                new Forecast("Fortaleza", "BR", 27, 5, "2023-02-28"),
+                new Forecast("Pissouri", "CY", 18, 3, "2023-02-28"),
+                new Forecast("Wailea", "US", 21, 6, "2023-02-28")
         );
     }
 
-    default List<SixteenDayForecastDto> getListOfForecastsWithMissingForecastForOneLocation() {
+    default List<Forecast> getNotFulfillingCriteriaForecasts() {
         return List.of(
-                new SixteenDayForecastDto("Jastarnia", "PL", List.of(
-                        new WeatherDataDto(2, 1, 4, "2023-02-27"),
-                        new WeatherDataDto(4, 1, 4, "2023-02-28")
-                )),
-                new SixteenDayForecastDto("Bridgetown", "BB", List.of(
-                        new WeatherDataDto(26, 23, 4, "2023-02-27"),
-                        new WeatherDataDto(26, 24, 8, "2023-02-28")
-                )),
-                new SixteenDayForecastDto("Fortaleza", "BR", List.of(
-                        new WeatherDataDto(27, 24, 4, "2023-02-27"),
-                        new WeatherDataDto(29, 25, 5, "2023-02-28")
-                )),
-                new SixteenDayForecastDto("Pissouri", "CY", List.of(
-                        new WeatherDataDto(21, 11, 2, "2023-02-27"),
-                        new WeatherDataDto(23, 14, 3, "2023-02-28")
-                )),
-                new SixteenDayForecastDto("Wailea", "US", List.of(
-                        new WeatherDataDto(24, 18, 4, "2023-02-27")
-                ))
+                new Forecast("Jastarnia", "PL", 1, 1, "2023-02-27"),
+                new Forecast("Bridgetown", "BB", 1, 1, "2023-02-27"),
+                new Forecast("Fortaleza", "BR", 1, 1, "2023-02-27"),
+                new Forecast("Pissouri", "CY", 1, 1, "2023-02-27"),
+                new Forecast("Wailea", "US", 1, 1, "2023-02-27")
         );
     }
 
-    default List<SixteenDayForecastDto> getNotFulfillingCriteriaForecasts() {
+    default List<Forecast> getNotFulfillingWindSpeedCriteriaForecasts() {
         return List.of(
-                new SixteenDayForecastDto("Jastarnia", "PL", List.of(
-                        new WeatherDataDto(1, 1, 1, "2023-02-27")
-                )),
-                new SixteenDayForecastDto("Bridgetown", "BB", List.of(
-                        new WeatherDataDto(1, 1, 1, "2023-02-27")
-                )),
-                new SixteenDayForecastDto("Fortaleza", "BR", List.of(
-                        new WeatherDataDto(1, 1, 1, "2023-02-27")
-                )),
-                new SixteenDayForecastDto("Pissouri", "CY", List.of(
-                        new WeatherDataDto(1, 1, 1, "2023-02-27")
-                )),
-                new SixteenDayForecastDto("Wailea", "US", List.of(
-                        new WeatherDataDto(1, 1, 1, "2023-02-27")
-                ))
+                new Forecast("Jastarnia", "PL", 20, 1, "2023-02-27"),
+                new Forecast("Bridgetown", "BB", 20, 1, "2023-02-27"),
+                new Forecast("Fortaleza", "BR", 20, 1, "2023-02-27"),
+                new Forecast("Pissouri", "CY", 20, 1, "2023-02-27"),
+                new Forecast("Wailea", "US", 20, 1, "2023-02-27")
         );
     }
 
-    default List<SixteenDayForecastDto> getNotFulfillingWindSpeedCriteriaForecasts() {
+    default List<Forecast> getNotFulfillingAverageTemperatureForecasts() {
         return List.of(
-                new SixteenDayForecastDto("Jastarnia", "PL", List.of(
-                        new WeatherDataDto(20, 20, 1, "2023-02-27")
-                )),
-                new SixteenDayForecastDto("Bridgetown", "BB", List.of(
-                        new WeatherDataDto(20, 20, 1, "2023-02-27")
-                )),
-                new SixteenDayForecastDto("Fortaleza", "BR", List.of(
-                        new WeatherDataDto(20, 20, 1, "2023-02-27")
-                )),
-                new SixteenDayForecastDto("Pissouri", "CY", List.of(
-                        new WeatherDataDto(20, 20, 1, "2023-02-27")
-                )),
-                new SixteenDayForecastDto("Wailea", "US", List.of(
-                        new WeatherDataDto(20, 20, 1, "2023-02-27")
-                ))
-        );
-    }
-
-    default List<SixteenDayForecastDto> getNotFulfillingAverageTemperatureForecasts() {
-        return List.of(
-                new SixteenDayForecastDto("Jastarnia", "PL", List.of(
-                        new WeatherDataDto(1, 1, 10, "2023-02-27")
-                )),
-                new SixteenDayForecastDto("Bridgetown", "BB", List.of(
-                        new WeatherDataDto(1, 1, 10, "2023-02-27")
-                )),
-                new SixteenDayForecastDto("Fortaleza", "BR", List.of(
-                        new WeatherDataDto(1, 1, 10, "2023-02-27")
-                )),
-                new SixteenDayForecastDto("Pissouri", "CY", List.of(
-                        new WeatherDataDto(1, 1, 10, "2023-02-27")
-                )),
-                new SixteenDayForecastDto("Wailea", "US", List.of(
-                        new WeatherDataDto(1, 1, 10, "2023-02-27")
-                ))
+                new Forecast("Jastarnia", "PL", 1, 10, "2023-02-27"),
+                new Forecast("Bridgetown", "BB", 1, 10, "2023-02-27"),
+                new Forecast("Fortaleza", "BR", 1, 10, "2023-02-27"),
+                new Forecast("Pissouri", "CY", 1, 10, "2023-02-27"),
+                new Forecast("Wailea", "US", 1, 10, "2023-02-27")
         );
     }
 
@@ -161,4 +77,12 @@ public interface Samples {
     default ResponseEntity<SixteenDayForecastDto> getResponseWithNullBody() {
         return new ResponseEntity<>(null, HttpStatus.ACCEPTED);
     }
+
+    default SixteenDayForecastDto getSixteenDayForecast() {
+        return new SixteenDayForecastDto("Jastarnia", "PL", List.of(
+                new WeatherDataDto(2, 6, 4, "2023-02-27"),
+                new WeatherDataDto(4, 2, 4, "2023-02-28")
+        ));
+    }
+
 }
