@@ -37,7 +37,8 @@ public class ForecastHttpClient {
             );
             final SixteenDayForecastDto body = response.getBody();
 
-            return validateResponseBody(city, body);
+            validateResponseBody(city, body);
+            return body;
         } catch (RestClientException e) {
             log.error(e.getMessage());
             throw new ForecastNotFoundException(city);
@@ -48,11 +49,10 @@ public class ForecastHttpClient {
         return String.format("%s?key=%s&city=%s&country=%s", path, apiKey, city, country);
     }
 
-    private SixteenDayForecastDto validateResponseBody(String city, SixteenDayForecastDto body) {
-        if (body == null) {
+    private void validateResponseBody(String city, SixteenDayForecastDto responseBody) {
+        if (responseBody == null) {
             throw new ForecastNotFoundException(city);
         }
-        return body;
     }
 
 }
