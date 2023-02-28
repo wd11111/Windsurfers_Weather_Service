@@ -25,8 +25,6 @@ public class ForecastMapper {
         return forecasts.data()
                 .stream()
                 .filter(forecast -> forecast.datetime().equals(date))
-                .toList()
-                .stream()
                 .findFirst()
                 .orElseThrow(() -> new FailedToFindForecastException(forecasts.city_name(), date));
     }
