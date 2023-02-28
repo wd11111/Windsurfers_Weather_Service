@@ -15,11 +15,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ForecastHttpClientTest implements SampleRestTemplateExchangeResponse, Samples {
+class ForecastHttpClientImplTest implements SampleRestTemplateExchangeResponse, Samples {
 
     private RestTemplate restTemplate = mock(RestTemplate.class);
 
-    ForecastHttpClient httpClient = new ForecastHttpClient(restTemplate, "/path", "key");
+    ForecastHttpClientImpl httpClient = new ForecastHttpClientImpl(restTemplate, "/path", "key");
 
     @Test
     void should_correctly_return_sixteen_day_forecast() {
