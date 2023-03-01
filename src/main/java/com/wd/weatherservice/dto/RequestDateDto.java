@@ -10,6 +10,5 @@ public record RequestDateDto(
         @MaxDate
         @NotNull
         @FutureOrPresent
-        LocalDate date
-) {
+        LocalDate date) {
 }

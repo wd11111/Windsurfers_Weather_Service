@@ -7,6 +7,7 @@ import java.util.Comparator;
 
 @Component
 public class ForecastComparator implements Comparator<Forecast> {
+
     @Override
     public  int compare(Forecast o1, Forecast o2) {
         return Integer.compare(calculateValue(o2), calculateValue(o1));

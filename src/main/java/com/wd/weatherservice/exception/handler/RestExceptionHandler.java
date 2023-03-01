@@ -31,11 +31,13 @@ public class RestExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception) {
         Map<String, String> errors = new HashMap<>();
+
         exception.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
+
         log.info("Validation not passed");
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }

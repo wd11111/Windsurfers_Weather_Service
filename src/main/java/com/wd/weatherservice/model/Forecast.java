@@ -5,6 +5,5 @@ public record Forecast(
         String country,
         Integer avgTemp,
         Integer windSpeed,
-        String date
-) {
+        String date) {
 }
