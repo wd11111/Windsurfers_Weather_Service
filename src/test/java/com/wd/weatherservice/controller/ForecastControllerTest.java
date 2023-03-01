@@ -51,7 +51,7 @@ class ForecastControllerTest implements Samples {
         String expectedResponseBody = objectMapper.writeValueAsString(response);
         when(forecastService.getTheBestLocationForWindsurfing(anyString())).thenReturn(response);
 
-        String responseBody = mockMvc.perform(MockMvcRequestBuilders.post("/api/forecast")
+        String responseBody = mockMvc.perform(MockMvcRequestBuilders.post("/api/forecasts")
                         .contentType(APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -66,7 +66,7 @@ class ForecastControllerTest implements Samples {
     void should_return_bad_request_status_when_given_date_is_farther_than_sixteen_days() throws Exception {
         String requestBody = objectMapper.writeValueAsString(new RequestDateDto(now().plusDays(16)));
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/forecast")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/forecasts")
                         .contentType(APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
@@ -78,7 +78,7 @@ class ForecastControllerTest implements Samples {
     void should_return_bad_request_status_when_given_date_is_past() throws Exception {
         String requestBody = objectMapper.writeValueAsString(new RequestDateDto(now().minusDays(5)));
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/forecast")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/forecasts")
                         .contentType(APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
