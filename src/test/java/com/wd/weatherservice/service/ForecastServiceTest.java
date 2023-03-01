@@ -60,7 +60,7 @@ class ForecastServiceTest implements Samples {
     }
 
     @Test
-    void should_return_empty_collection_when_any_of_location_doesnt_fulfil_criteria() {
+    void should_return_empty_collection_when_any_of_locations_fulfil_criteria() {
         List<Forecast> list = getNotFulfillingCriteriaForecasts();
         when(forecastMapper.mapToForecast(anyString(), any())).thenReturn(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4));
 
@@ -70,7 +70,7 @@ class ForecastServiceTest implements Samples {
     }
 
     @Test
-    void should_return_empty_collection_when_any_of_location_doesnt_fulfil_wind_speed_criteria() {
+    void should_return_empty_collection_when_any_of_locations_fulfil_wind_speed_criteria() {
         List<Forecast> list = getNotFulfillingWindSpeedCriteriaForecasts();
         when(forecastMapper.mapToForecast(anyString(), any())).thenReturn(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4));
 
@@ -80,7 +80,7 @@ class ForecastServiceTest implements Samples {
     }
 
     @Test
-    void should_return_empty_collection_when_any_of_location_doesnt_fulfil_average_temperature_criteria() {
+    void should_return_empty_collection_when_any_of_locations_fulfil_average_temperature_criteria() {
         List<Forecast> list = getNotFulfillingAverageTemperatureForecasts();
         when(forecastMapper.mapToForecast(anyString(), any())).thenReturn(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4));
 
