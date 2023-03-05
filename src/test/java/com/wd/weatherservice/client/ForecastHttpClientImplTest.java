@@ -19,7 +19,7 @@ class ForecastHttpClientImplTest implements SampleRestTemplateExchangeResponse, 
 
     private RestTemplate restTemplate = mock(RestTemplate.class);
 
-    ForecastHttpClientImpl httpClient = new ForecastHttpClientImpl(restTemplate, "/path", "key");
+    ForecastHttpClientImpl httpClient = new ForecastHttpClientImpl(restTemplate, "https://example.com/forecast", "key");
 
     @Test
     void should_correctly_return_sixteen_day_forecast() {
