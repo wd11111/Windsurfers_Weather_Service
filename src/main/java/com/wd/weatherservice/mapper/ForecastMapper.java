@@ -11,14 +11,15 @@ public class ForecastMapper {
 
     public Forecast mapToForecast(String date, SixteenDayForecastDto sixteenDayForecast) {
         WeatherDataDto forecastForGivenDay = getForecastForGivenDay(sixteenDayForecast, date);
+        int averageTemperature = countAverageTemperature(forecastForGivenDay.min_temp(), forecastForGivenDay.max_temp());
 
-        return new Forecast(
-                sixteenDayForecast.city_name(),
-                sixteenDayForecast.country_code(),
-                countAverageTemperature(forecastForGivenDay.min_temp(), forecastForGivenDay.max_temp()),
-                forecastForGivenDay.wind_spd(),
-                forecastForGivenDay.datetime()
-        );
+        return Forecast.builder()
+                .city(sixteenDayForecast.city_name())
+                .country(sixteenDayForecast.country_code())
+                .avgTemp(averageTemperature)
+                .windSpeed(forecastForGivenDay.wind_spd())
+                .date(forecastForGivenDay.datetime())
+                .build();
     }
 
     private WeatherDataDto getForecastForGivenDay(SixteenDayForecastDto forecasts, String date) {
