@@ -10,6 +10,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Map;
 
@@ -47,7 +48,11 @@ public class ForecastHttpClientImpl implements ForecastHttpClient {
     }
 
     private String buildPath(String city, String country) {
-        return String.format("%s?key=%s&city=%s&country=%s", path, apiKey, city, country);
+        return UriComponentsBuilder.fromHttpUrl(path)
+                .queryParam("key", apiKey)
+                .queryParam("city", city)
+                .queryParam("country", country)
+                .toUriString();
     }
 
     private void validateResponseBody(String city, SixteenDayForecastDto responseBody) {
