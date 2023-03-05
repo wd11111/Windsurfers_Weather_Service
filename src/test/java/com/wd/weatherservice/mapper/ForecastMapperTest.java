@@ -27,9 +27,9 @@ class ForecastMapperTest implements Samples {
 
         assertThat(result).extracting(Forecast::city, Forecast::country, Forecast::windSpeed, Forecast::date)
                 .isEqualTo(List.of(
-                        sixteenDayForecast.city_name(),
-                        sixteenDayForecast.country_code(),
-                        sixteenDayForecast.data().get(0).wind_spd(),
+                        sixteenDayForecast.cityName(),
+                        sixteenDayForecast.countryCode(),
+                        sixteenDayForecast.data().get(0).windSpd(),
                         date
                 ));
     }

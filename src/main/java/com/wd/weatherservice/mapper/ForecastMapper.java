@@ -11,13 +11,13 @@ public class ForecastMapper {
 
     public Forecast mapToForecast(String date, SixteenDayForecastDto sixteenDayForecast) {
         WeatherDataDto forecastForGivenDay = getForecastForGivenDay(sixteenDayForecast, date);
-        int averageTemperature = countAverageTemperature(forecastForGivenDay.min_temp(), forecastForGivenDay.max_temp());
+        int averageTemperature = countAverageTemperature(forecastForGivenDay.minTemp(), forecastForGivenDay.maxTemp());
 
         return Forecast.builder()
-                .city(sixteenDayForecast.city_name())
-                .country(sixteenDayForecast.country_code())
+                .city(sixteenDayForecast.cityName())
+                .country(sixteenDayForecast.countryCode())
                 .avgTemp(averageTemperature)
-                .windSpeed(forecastForGivenDay.wind_spd())
+                .windSpeed(forecastForGivenDay.windSpd())
                 .date(forecastForGivenDay.datetime())
                 .build();
     }
@@ -27,7 +27,7 @@ public class ForecastMapper {
                 .stream()
                 .filter(forecast -> forecast.datetime().equals(date))
                 .findFirst()
-                .orElseThrow(() -> new FailedToFindForecastException(forecasts.city_name(), date));
+                .orElseThrow(() -> new FailedToFindForecastException(forecasts.cityName(), date));
     }
 
     private int countAverageTemperature(int minTemperature, int maxTemperature) {
