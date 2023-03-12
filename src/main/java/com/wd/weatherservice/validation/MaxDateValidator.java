@@ -9,9 +9,10 @@ import static java.time.LocalDate.now;
 
 public class MaxDateValidator implements ConstraintValidator<MaxDate, LocalDate> {
 
+    private static final LocalDate FURTHEST_POSSIBLE_DATE = now().plusDays(16);
+
     @Override
     public boolean isValid(LocalDate localDate, ConstraintValidatorContext constraintValidatorContext) {
-        LocalDate furthestPossibleDate = now().plusDays(16);
-        return localDate.isBefore(furthestPossibleDate);
+        return localDate.isBefore(FURTHEST_POSSIBLE_DATE);
     }
 }
