@@ -1,10 +1,10 @@
 # Windsurfers_Weather_Service
 
 Application uses the Weatherbit Forecast Api and exposes a REST API, where the argument is a day (yyyy-mm-dd date format) and return value is one of the following location:
-Jastarnia (Poland);
-Bridgetown (Barbados)
-Fortaleza (Brazil")
-Wailea (Hawaii)
+Jastarnia (Poland), 
+Bridgetown (Barbados), 
+Fortaleza (Brazil), 
+Wailea (Hawaii), 
 Pissouri (Cyprus)
 depending on which place offers better windsurfing conditions on that day in the 16 forecast day range. Apart from retruning the name of the location, the response should also include weather conditions (at least average temperature - Celcius, wind speed - m/s) for the location on that day.
 The best location selection criteria are:
